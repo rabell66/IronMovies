@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
         }
 
 
-//        @RequestMapping(path = "/medium-popular-long-name", method = RequestMethod.GET)
+//        @RequestMapping(path = "/mepdium-popular-long-name", method = RequestMethod.GET)
 //        public String medPop(){
 //            model.addAttribute("movies",getMovies(API_URL)
 //                    .stream()
