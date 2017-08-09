@@ -1,20 +1,32 @@
 package com.ironmovies.controllers;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+
+import com.ironmovies.models.Movie;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
+import java.util.ArrayList;
+import java.util.List;
 
 
-    @RestController
-    public class MovieController {
-        static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
+@RestController
+public class MovieController {
+    List<Movie> movies = new ArrayList();
+    static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
 
-        @GetMapping(path = "/")
-        public String login() {
-            return "This is a restful API Goto /API/routes";
-        }
+    @GetMapping(path = "/api/movies")
+    public String getMovies(String route) {
+        //TODO: checkfor api key ="abc"
+//        RestTemplate restTemplate = new RestTemplate();
+//        Results results = restTemplate.getForObject(route, Results.class);
+//        return results.top(10);
+        return "{\"movies\":[{\"posterPath\": \"https://www.filepicker.io/api/file/pNN5QACWR1m85rWSppYa\", " +
+                "\"title\": \"This is my Title\", " +
+                "\"overview\": \"here is the descriptive overview…\"}]}";
+    }
 
 
-//        @RequestMapping(path = "/medium-popular-long-name", method = RequestMethod.GET)
-//        public String medPop(){
+//
 //            model.addAttribute("movies",getMovies(API_URL)
 //                    .stream()
 //                    .filter(e->e.getTitle().length()>9)
