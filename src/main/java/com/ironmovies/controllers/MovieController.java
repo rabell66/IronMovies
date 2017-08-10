@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 public class MovieController {
     List<Movie> movies = new ArrayList();
     static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
-
+    static final String POP_API_URL = "https://api.themoviedb.org/3/movie/popular?api_key=be2a38521a7859c95e2d73c48786e4bb";;
 
     @GetMapping(path ="/api/test")
     public Object singleMovieTest(String route) {
@@ -33,29 +33,19 @@ public class MovieController {
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
         return resultsPage;
-
-
-
-//
-//            model.addAttribute("movies",getMovies(API_URL)
-//                    .stream()
-//                    .filter(e->e.getTitle().length()>9)
-//                    .filter(e->e.getPopularity()>29 && e.getPopularity()<81)
-//                    .collect(Collectors.toList()));
-//            return "medium-popular-long-name";
-//        }
-//        @GetMapping(path = "/now-playing")
-//        public String nowPlaying (){
-//            model.addAttribute("movies",getMovies(API_URL));
-//            return "now-playing";
-//        }
-//
-//        public List<Movie> getMovies(String route){
-//            RestTemplate restTemplate = new RestTemplate();
-//            ResultsPage results  = restTemplate.getForObject(route, ResultsPage.class);
-//
-//
-//            return results.getResults();
-//    }
     }
-}
+//        @PostMapping(path ="/api/movies/{id}")
+//                public Object getMovie(String route){
+//            RestTemplate restTemplate = new RestTemplate();
+//            ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
+//            return resultsPage.getResults().stream().filter();
+//        }
+        @GetMapping(path = "/api/popular")
+    public Object popularMovies(String route){
+            RestTemplate restTemplate = new RestTemplate();
+            ResultsPage resultsPage = restTemplate.getForObject(POP_API_URL, ResultsPage.class);
+            return resultsPage.getResults();
+        }
+
+    }
+
