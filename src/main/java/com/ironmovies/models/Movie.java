@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
+    private int id;
     private String title;
     private String overview;
     private double popularity;
@@ -56,5 +57,13 @@ public class Movie {
 
     public void setRelease_date(String release_date) {
         this.release_date = release_date;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }
