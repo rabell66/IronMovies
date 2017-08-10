@@ -1,9 +1,13 @@
 package com.ironmovies.controllers;
 
 import com.ironmovies.models.Movie;
+import com.ironmovies.models.ResultsPage;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.RestTemplate;
+
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collector;
 
 
 @RestController
@@ -12,15 +16,12 @@ public class MovieController {
     static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
 
     @GetMapping(path = "/api/movies")
-    public String getMovies(String route) {
+    public Object getMovies(String route) {
         //TODO: checkfor api key ="abc"
-//        RestTemplate restTemplate = new RestTemplate();
-//        Results results = restTemplate.getForObject(route, Results.class);
-//        return results.top(10);
-        return "{\"movies\":[{\"posterPath\": \"https://www.filepicker.io/api/file/pNN5QACWR1m85rWSppYa\", " +
-                "\"title\": \"This is my Title\", " +
-                "\"overview\": \"here is the descriptive overview…\"}]}";
-    }
+        RestTemplate restTemplate = new RestTemplate();
+        ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
+        return resultsPage;
+
 
 
 //
@@ -44,5 +45,5 @@ public class MovieController {
 //
 //            return results.getResults();
 //    }
+    }
 }
-
