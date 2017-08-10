@@ -108,5 +108,17 @@ public class MovieController {
                 "/similar" + API_KEY, SimilarMovieResults.class);
         return new ResponseEntity(similarMovieResults, HttpStatus.OK);
     }
+
+    @CrossOrigin("http://unrentforest.surge.sh/")
+    @GetMapping(path = "/api/movies/{id}/vid")
+    public ResponseEntity <Object> getVid(@PathVariable(value = "id") String id, String apikey) {
+        if (!apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        VideoResults videoResults = restTemplate.getForObject(BASE_URL + id +
+                "/videos" + API_KEY, VideoResults.class);
+        return new ResponseEntity(videoResults.getResults().get(0), HttpStatus.OK);
+    }
 }
 

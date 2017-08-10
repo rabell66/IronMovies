@@ -12,7 +12,7 @@ public class Video{
     public void setKey(String key) {
         this.key = key;
     }
-    
+
     public String generateUrl() {
         return YOUTUBE + getKey();
     }
