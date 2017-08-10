@@ -6,13 +6,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Movie {
     private String title;
-
-    @JsonProperty("poster_path")
-    private String posterPath;
-
-    private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/original";
     private String overview;
     private double popularity;
+    private String posterPath;
+    private String release_date;
+
+    @JsonProperty("poster_path")
+
+    private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/original";
 
     public Movie() {
     }
@@ -47,5 +48,13 @@ public class Movie {
 
     public void setPopularity(double popularity) {
         this.popularity = popularity;
+    }
+
+    public String getRelease_date() {
+        return release_date;
+    }
+
+    public void setRelease_date(String release_date) {
+        this.release_date = release_date;
     }
 }
