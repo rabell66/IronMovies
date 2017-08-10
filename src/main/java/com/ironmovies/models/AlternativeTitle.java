@@ -1,6 +1,6 @@
 package com.ironmovies.models;
 
-public class AlternativeTitle {
+public class AlternativeTitle extends Movie{
     private String title;
 
     public String getTitle() {

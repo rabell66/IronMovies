@@ -9,11 +9,10 @@ public class Movie {
     private String title;
     private String overview;
     private double popularity;
-    private String posterPath;
     private String release_date;
 
     @JsonProperty("poster_path")
-
+    private String posterPath;
     private static final String IMAGE_BASE_URL = "http://image.tmdb.org/t/p/original";
 
     public Movie() {

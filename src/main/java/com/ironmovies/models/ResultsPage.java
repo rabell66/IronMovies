@@ -1,11 +1,15 @@
 package com.ironmovies.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.ironmovies.models.Movie;
 
 import java.util.List;
 
+@JsonIgnoreProperties
 public class ResultsPage {
-    public List<Movie> results;
+    private List<Movie> results;
+
+
     public List<AlternativeTitle> alternativeTitles;
 
     public ResultsPage() {
