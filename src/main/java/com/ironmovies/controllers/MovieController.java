@@ -15,67 +15,76 @@ import java.util.stream.Collectors;
 
 @RestController
 public class MovieController {
-    static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
-    static final String POP_API_URL = "https://api.themoviedb.org/3/movie/popular?api_key=be2a38521a7859c95e2d73c48786e4bb";
-    static final String UP_API_URL = "https://api.themoviedb.org/3/movie/upcoming?api_key=be2a38521a7859c95e2d73c48786e4bb";
+    static final String BASE_URL = "https://api.themoviedb.org/3/movie";
+    static final String API_KEY = "?api_key=be2a38521a7859c95e2d73c48786e4bb";
+    static final String NOW_PLAYING_URL = BASE_URL + "/now_playing" + API_KEY;
+    static final String POP_API_URL = BASE_URL + "/popular" + API_KEY;
+    static final String UP_API_URL = BASE_URL + "/upcoming" + API_KEY;
 
-    @GetMapping(path = "/api/test")
-    public ResponseEntity<List<Movie>> singleMovieTest() {
-        RestTemplate testTemplate = new RestTemplate();
-        ResultsPage resultsPage = testTemplate.getForObject(API_URL, ResultsPage.class);
-        List<Movie> movies = resultsPage.getResults().stream()
-                .filter(e -> e.getTitle()
-                        .contains("Spider-Man: Homecoming"))
-                .collect(Collectors.toList());
-        return new ResponseEntity(movies, HttpStatus.OK);
+    List<Movie> movies = new ArrayList<>();
+
+    @GetMapping("/apitest")
+    public List<Movie> apiTest(){
+        return generateMovies();
     }
 
-    @GetMapping(path = "/api/movies")
+    private List<Movie> generateMovies() {
+        Movie movie1 = new Movie();
+        movie1.setOverview("my overview");
+        movie1.setPopularity(99.0);
+        movie1.setPosterPath("https://yt3.ggpht.com/-Yai9Hqhjdl8/AAAAAAAAAAI/AAAAAAAAAAA/DdqlORbBBPQ/s900-c-k-no-mo-rj-c0xffffff/photo.jpg");
+        movie1.setTitle("my apiTest Title");
+        movies.add(movie1);
+        return movies;
+    }
+
+    @CrossOrigin("http://unrentforest.surge.sh/")
+    @GetMapping(path = "/api/now-playing")
     public ResponseEntity<List<Movie>> getMovies(@RequestParam String apikey) {
-        //TODO: checkfor api key ="abc"
         if (! apikey.equalsIgnoreCase("abc")) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
 
         RestTemplate restTemplate = new RestTemplate();
-        ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
+        ResultsPage resultsPage = restTemplate.getForObject(NOW_PLAYING_URL, ResultsPage.class);
 
         return new ResponseEntity(resultsPage, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://unrentforest.surge.sh/")
     @GetMapping(path = "/api/movies/{id}")
-
-    public @ResponseBody
-    List<Movie> getAttr(@PathVariable(value = "id") String id, String apikey) {
+    public ResponseEntity<Movie> getMovie(@PathVariable(value = "id") String id, String apikey) {
         if (! apikey.equalsIgnoreCase("abc")) {
-            return (List<Movie>) new ResponseEntity(HttpStatus.FORBIDDEN);
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
-        int newID = Integer.parseInt(id);
+//        int newID = Integer.parseInt(id);
         RestTemplate restTemplate = new RestTemplate();
-        ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
-        return resultsPage.getResults().stream().filter(e -> e.getId() == newID).collect(Collectors.toList());
+        Movie movie = restTemplate.getForObject(BASE_URL + id + API_KEY, Movie.class);
+        return new ResponseEntity(movie, HttpStatus.OK);
 
     }
 
+    @CrossOrigin("http://unrentforest.surge.sh/")
     @GetMapping(path = "/api/upcoming")
-    public Object upComingMovies(String apikey) {
+    public ResponseEntity<List<Movie>> upComingMovies(String apikey) {
         if (! apikey.equalsIgnoreCase("abc")) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(UP_API_URL, ResultsPage.class);
-        return resultsPage;
+        return new ResponseEntity(resultsPage, HttpStatus.OK);
     }
 
-
+    @CrossOrigin("http://unrentforest.surge.sh/")
     @GetMapping(path = "/api/popular")
-    public Object popularMovies(String apikey) {
+    public ResponseEntity<List<Movie>> popularMovies(String apikey) {
         if (! apikey.equalsIgnoreCase("abc")) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(POP_API_URL, ResultsPage.class);
-        return resultsPage.getResults().stream().filter(e -> e.getPopularity() > 50).collect(Collectors.toList());
+
+        return new ResponseEntity(resultsPage, HttpStatus.OK);
     }
 
 
