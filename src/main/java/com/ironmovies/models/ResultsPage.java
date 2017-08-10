@@ -9,19 +9,7 @@ import java.util.List;
 public class ResultsPage {
     private List<Movie> results;
 
-
-    public List<AlternativeTitle> alternativeTitles;
-
     public ResultsPage() {
-    }
-
-
-    public List<AlternativeTitle> getAlternativeTitles() {
-        return alternativeTitles;
-    }
-
-    public void setAlternativeTitles(List<AlternativeTitle> alternativeTitles) {
-        this.alternativeTitles = alternativeTitles;
     }
 
     public List<Movie> getResults() {
