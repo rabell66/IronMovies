@@ -8,12 +8,24 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 
 @RestController
 public class MovieController {
     List<Movie> movies = new ArrayList();
     static final String API_URL = "https://api.themoviedb.org/3/movie/now_playing?api_key=be2a38521a7859c95e2d73c48786e4bb";
+
+
+    @GetMapping(path ="/api/test")
+    public Object singleMovieTest(String route) {
+        RestTemplate testTemplate = new RestTemplate();
+        ResultsPage resultsPage = testTemplate.getForObject(API_URL, ResultsPage.class);
+        return resultsPage.getResults().stream()
+                .filter(e->e.getTitle()
+                        .contains("Spider-Man: Homecoming"))
+                        .collect(Collectors.toList());
+    }
 
     @GetMapping(path = "/api/movies")
     public Object getMovies(String route) {
