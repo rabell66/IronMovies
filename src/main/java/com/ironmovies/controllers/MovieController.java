@@ -1,7 +1,6 @@
 package com.ironmovies.controllers;
 
-import com.ironmovies.models.Movie;
-import com.ironmovies.models.ResultsPage;
+import com.ironmovies.models.*;
 import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +14,11 @@ import java.util.stream.Collectors;
 
 @RestController
 public class MovieController {
-    static final String BASE_URL = "https://api.themoviedb.org/3/movie";
+    static final String BASE_URL = "https://api.themoviedb.org/3/movie/";
     static final String API_KEY = "?api_key=be2a38521a7859c95e2d73c48786e4bb";
-    static final String NOW_PLAYING_URL = BASE_URL + "/now_playing" + API_KEY;
-    static final String POP_API_URL = BASE_URL + "/popular" + API_KEY;
-    static final String UP_API_URL = BASE_URL + "/upcoming" + API_KEY;
+    static final String NOW_PLAYING_URL = BASE_URL + "now_playing" + API_KEY;
+    static final String POP_API_URL = BASE_URL + "popular" + API_KEY;
+    static final String UP_API_URL = BASE_URL + "upcoming" + API_KEY;
 
     List<Movie> movies = new ArrayList<>();
 
@@ -57,7 +56,6 @@ public class MovieController {
         if (! apikey.equalsIgnoreCase("abc")) {
             return new ResponseEntity(HttpStatus.FORBIDDEN);
         }
-//        int newID = Integer.parseInt(id);
         RestTemplate restTemplate = new RestTemplate();
         Movie movie = restTemplate.getForObject(BASE_URL + id + API_KEY, Movie.class);
         return new ResponseEntity(movie, HttpStatus.OK);
@@ -87,6 +85,28 @@ public class MovieController {
         return new ResponseEntity(resultsPage, HttpStatus.OK);
     }
 
+    @CrossOrigin("http://unrentforest.surge.sh/")
+    @GetMapping(path = "/api/movies/{id}/alt")
+    public ResponseEntity <List<AlternativeTitle>> getAlt(@PathVariable(value = "id") String id, String apikey) {
+        if (!apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        AlternativeTitleResults alternativeTitleResults = restTemplate.getForObject(BASE_URL + id +
+                "/alternative_titles" + API_KEY, AlternativeTitleResults.class);
+        return new ResponseEntity(alternativeTitleResults, HttpStatus.OK);
+    }
 
+    @CrossOrigin("http://unrentforest.surge.sh/")
+    @GetMapping(path = "/api/movies/{id}/sim")
+    public ResponseEntity <List<SimilarMovie>> getSim(@PathVariable(value = "id") String id, String apikey) {
+        if (!apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+        RestTemplate restTemplate = new RestTemplate();
+        SimilarMovieResults similarMovieResults = restTemplate.getForObject(BASE_URL + id +
+                "/similar" + API_KEY, SimilarMovieResults.class);
+        return new ResponseEntity(similarMovieResults, HttpStatus.OK);
+    }
 }
 
