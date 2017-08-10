@@ -31,17 +31,25 @@ public class MovieController {
     }
 
     @GetMapping(path = "/api/movies")
-    public Object getMovies() {
+    public ResponseEntity<List<Movie>> getMovies(@RequestParam String apikey) {
         //TODO: checkfor api key ="abc"
+        if (! apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
+
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
-        return resultsPage;
+
+        return new ResponseEntity(resultsPage, HttpStatus.OK);
     }
 
     @GetMapping(path = "/api/movies/{id}")
 
     public @ResponseBody
-    List<Movie> getAttr(@PathVariable(value = "id") String id, String someAttr) {
+    List<Movie> getAttr(@PathVariable(value = "id") String id, String apikey) {
+        if (! apikey.equalsIgnoreCase("abc")) {
+            return (List<Movie>) new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         int newID = Integer.parseInt(id);
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(API_URL, ResultsPage.class);
@@ -50,7 +58,10 @@ public class MovieController {
     }
 
     @GetMapping(path = "/api/upcoming")
-    public Object upComingMovies() {
+    public Object upComingMovies(String apikey) {
+        if (! apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(UP_API_URL, ResultsPage.class);
         return resultsPage;
@@ -58,7 +69,10 @@ public class MovieController {
 
 
     @GetMapping(path = "/api/popular")
-    public Object popularMovies() {
+    public Object popularMovies(String apikey) {
+        if (! apikey.equalsIgnoreCase("abc")) {
+            return new ResponseEntity(HttpStatus.FORBIDDEN);
+        }
         RestTemplate restTemplate = new RestTemplate();
         ResultsPage resultsPage = restTemplate.getForObject(POP_API_URL, ResultsPage.class);
         return resultsPage.getResults().stream().filter(e -> e.getPopularity() > 50).collect(Collectors.toList());
